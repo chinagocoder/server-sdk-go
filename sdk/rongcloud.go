@@ -156,30 +156,28 @@ func fillJSONHeader(req *httplib.BeegoHTTPRequest) {
 
 // NewRongCloud 创建 RongCloud 对象
 func NewRongCloud(appKey, appSecret string, options ...rongCloudOption) *RongCloud {
-	once.Do(func() {
-		// 默认扩展配置
-		defaultRongCloud := defaultExtra
-		defaultRongCloud.lastChageUriTime = 0
-		rc = &RongCloud{
-			appKey:         appKey,
-			appSecret:      appSecret,
-			rongCloudExtra: &defaultRongCloud,
-		}
+	// 默认扩展配置
+	defaultRongCloud := defaultExtra
+	defaultRongCloud.lastChageUriTime = 0
+	rc = &RongCloud{
+		appKey:         appKey,
+		appSecret:      appSecret,
+		rongCloudExtra: &defaultRongCloud,
+	}
 
-		for _, option := range options {
-			option(rc)
-		}
+	for _, option := range options {
+		option(rc)
+	}
 
-		if rc.globalTransport == nil {
-			rc.globalTransport = &http.Transport{
-				DialContext: (&net.Dialer{
-					Timeout:   rc.timeout * time.Second,
-					KeepAlive: rc.keepAlive * time.Second,
-				}).DialContext,
-				MaxIdleConnsPerHost: rc.maxIdleConnsPerHost,
-			}
+	if rc.globalTransport == nil {
+		rc.globalTransport = &http.Transport{
+			DialContext: (&net.Dialer{
+				Timeout:   rc.timeout * time.Second,
+				KeepAlive: rc.keepAlive * time.Second,
+			}).DialContext,
+			MaxIdleConnsPerHost: rc.maxIdleConnsPerHost,
 		}
-	})
+	}
 
 	return rc
 }

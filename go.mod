@@ -1,4 +1,4 @@
-module github.com/rongcloud/server-sdk-go/v3
+module github.com/chinagocoder/server-sdk-go
 
 require (
 	github.com/astaxie/beego v1.12.0
